@@ -1,0 +1,48 @@
+:root {
+  --rm-bg: #f4f7ee;
+  --rm-surface: #ffffff;
+  --rm-surface-soft: #eef4e2;
+  --rm-border: #cad7bd;
+  --rm-text: #20241d;
+  --rm-muted: #5f6957;
+  --rm-accent: #84a900;
+  --rm-accent-deep: #536d00;
+  --rm-accent-soft: #e4f5a8;
+  --rm-warm: #265dff;
+  --rm-warm-soft: #dce6ff;
+  --rm-shadow: 0 0.75rem 1.875rem rgba(42, 55, 27, 0.1);
+}
+
+body {
+  min-height: 100vh;
+  padding-bottom: 3.5rem;
+  background:
+    radial-gradient(circle at top left, rgba(132, 169, 0, 0.18), transparent 32%),
+    radial-gradient(circle at top right, rgba(38, 93, 255, 0.1), transparent 26%),
+    linear-gradient(180deg, #ffffff 0%, var(--rm-bg) 100%);
+  color: var(--rm-text);
+  font-family: sans-serif !important;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a {
+  font-family: sans-serif !important;
+}
+
+.tab-content {
+  width: 100%;
+}
+
+.welcome-module,
+.load-data-module {
+  margin-top: 0.25rem;
+}
+
+.app-shell-root {
+  min-height: calc(100vh - 9rem);
+}

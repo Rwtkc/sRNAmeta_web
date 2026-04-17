@@ -1,0 +1,14 @@
+:root {
+  --rm-bg: #f4f7ee;
+  --rm-surface: #ffffff;
+  --rm-surface-soft: #eef4e2;
+  --rm-border: #cad7bd;
+  --rm-text: #20241d;
+  --rm-muted: #5f6957;
+  --rm-accent: #84a900;
+  --rm-accent-deep: #536d00;
+  --rm-accent-soft: #e4f5a8;
+  --rm-warm: #265dff;
+  --rm-warm-soft: #dce6ff;
+  --rm-shadow: 0 0.75rem 1.875rem rgba(42, 55, 27, 0.1);
+}

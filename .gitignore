@@ -1,0 +1,7 @@
+.Rhistory
+.RData
+.Rproj.user/
+frontend/app_shell/node_modules/
+frontend/app_shell/dist/
+www/react/app_shell/
+

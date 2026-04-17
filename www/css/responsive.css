@@ -1,0 +1,15 @@
+@media (max-width: 61.9375rem) {
+  .navbar-default .navbar-brand {
+    font-size: 2.5rem;
+  }
+
+  .navbar-nav {
+    margin-top: 0;
+  }
+
+  .welcome-module,
+  .load-data-module {
+    padding: 0 0.625rem;
+  }
+}
+

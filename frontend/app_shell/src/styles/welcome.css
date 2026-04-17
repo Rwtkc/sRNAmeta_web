@@ -1,0 +1,127 @@
+.welcome-page {
+  display: grid;
+  gap: 1.125rem;
+  margin-bottom: 1.125rem;
+}
+
+.welcome-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 2.125rem 2.25rem 1.875rem;
+  border: 0.0625rem solid var(--rm-border);
+  border-radius: 1.375rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(132, 169, 0, 0.24), transparent 24%),
+    radial-gradient(circle at 0% 100%, rgba(38, 93, 255, 0.12), transparent 22%),
+    linear-gradient(180deg, #ffffff 0%, #f0f6e7 100%);
+  box-shadow: var(--rm-shadow);
+}
+
+.welcome-hero::after {
+  content: "";
+  position: absolute;
+  right: -2.5rem;
+  bottom: -2.25rem;
+  width: 15rem;
+  height: 15rem;
+  border-radius: 62.4375rem;
+  background: radial-gradient(circle, rgba(38, 93, 255, 0.12), transparent 68%);
+  pointer-events: none;
+}
+
+.welcome-hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 1.05fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.welcome-hero__copy {
+  min-width: 0;
+}
+
+.welcome-hero h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.75rem;
+  background: linear-gradient(90deg, #20241d 0%, #272d20 42%, #425124 76%, #5e742d 100%);
+  background-clip: text;
+  font-size: 3.25rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-hero__lead,
+.welcome-hero__supporting {
+  position: relative;
+  z-index: 1;
+  max-width: 78ch;
+  margin: 0;
+  color: var(--rm-muted);
+  font-size: 1.5rem;
+  line-height: 1.75;
+}
+
+.welcome-hero__supporting {
+  margin-top: 0.625rem;
+}
+
+.welcome-badges {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+.welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  border: 0.0625rem solid rgba(38, 93, 255, 0.24);
+  border-radius: 62.4375rem;
+  background: rgba(38, 93, 255, 0.1);
+  color: #1745c6;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.welcome-hero__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-hero__logo {
+  width: min(100%, 32rem);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0.75rem 1.375rem rgba(42, 55, 27, 0.12));
+}
+
+@media (max-width: 61.9375rem) {
+  .welcome-hero {
+    padding: 1.625rem 1.375rem 1.5rem;
+  }
+
+  .welcome-hero__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-hero__media {
+    justify-content: flex-start;
+  }
+
+  .welcome-hero__logo {
+    width: min(100%, 22rem);
+  }
+
+  .welcome-hero h1 {
+    font-size: 2.5rem;
+  }
+}
