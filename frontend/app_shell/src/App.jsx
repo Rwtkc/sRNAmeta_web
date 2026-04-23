@@ -1,4 +1,5 @@
 import LoadDataPage from "./components/LoadDataPage";
+import DifferentialAnalysisPage from "./components/DifferentialAnalysisPage";
 import MappingStatisticsPage from "./components/MappingStatisticsPage";
 import WelcomePage from "./components/WelcomePage";
 
@@ -11,6 +12,8 @@ export default function App({ config = {} }) {
       <main className="shell-main">
         {view === "load-data" ? (
           <LoadDataPage config={config.loadData || {}} />
+        ) : view === "differential-analysis" ? (
+          <DifferentialAnalysisPage config={config.differentialAnalysis || {}} />
         ) : view === "mapping-statistics" ? (
           <MappingStatisticsPage config={config.mappingStatistics || {}} />
         ) : (

@@ -60,6 +60,29 @@ shiny::runApp()
 - Do not add unrelated color systems, decorative blob backgrounds, or generic dashboard mosaics.
 - Preserve responsive behavior for desktop and mobile.
 
+## Continuation Notes
+
+- Read this file first when resuming work in a new conversation.
+- Before touching code in a resumed session, inspect the dirty worktree and work with existing changes instead of reverting them.
+- Differential Analysis frontend is currently split across `DifferentialAnalysisPage.jsx`, `DifferentialAnalysisSections.jsx`, `differentialAnalysisUtils.js`, `differentialAnalysisCharts.js`, and `differentialAnalysisExport.js`.
+- Load Data shared controls are now split into `LoadDataPage.jsx` and `LoadDataShared.jsx`; keep modal and picker UI logic out of `LoadDataPage.jsx` when doing further cleanup.
+- Preserve the current Differential Analysis subtab order and behavior: `Data`, `Volcano Plot`, `Heatmap`.
+- Keep the Data tab behavior unchanged: 10 rows per page, search with an explicit Apply button, and page jump controls.
+- Keep SVG-first export for volcano and heatmap figures. Prefer vector PDF export and do not reintroduce raster PDF workarounds or DOM screenshot fallbacks unless the user explicitly asks for them.
+- Heatmap refresh from `Top genes` must only refresh the heatmap payload, not rerun the full differential analysis request.
+- Heatmap detail modes must remain `Brush Selection` and `Gene IDs`.
+- Keep Differential Analysis typography, sidebar sizing, export controls, and output panel styling aligned with Load Data and Mapping Statistics.
+- The demo expression matrix flow now uses the human six-sample file `hsa_synthetic_raw_counts_6samples.txt` under `srnameta_job_root`; do not switch it back to the older maize demo unless explicitly requested.
+- The target annotation file for Differential target-gene mapping currently resolves from `Conserved_Site_Context_Scores.txt` or `Conserved_Site_Context_Scores.hsa.txt` under `srnameta_job_root`.
+- Differential target-gene mapping is currently intended for `miRNA` only and supports `Human` and `Mouse` species.
+- `Target Gene Network` must remain visible only while Differential Analysis is on the `Data` subtab.
+- `Target Gene Network` table behavior should stay aligned with the Differential Data table: 10 rows per page, search with Apply, page buttons, and page jump controls.
+- Differential data export now produces a ZIP bundle, not a single CSV. Include `srnameta_differential_analysis.csv` and, when available, `srnameta_target_gene_network.csv`.
+- `Query all in STRING` should continue to submit the batch list with stable identifiers derived from Ensembl IDs when available, while each target-gene row supports single-gene STRING navigation.
+- Prefer lightweight validation only during handoff cleanup: `pnpm build` for frontend and targeted `parse()` checks for changed R files. Do not add or run regression tests unless the user explicitly asks for them.
+- When doing further low-risk cleanup, prefer extracting self-contained presentational helpers or modal components. Avoid risky behavioral refactors in `DifferentialAnalysisSections.jsx` and `differential_analysis.data.R` unless a concrete bug requires it.
+- Remove stale `tmp*` debug artifacts and redundant export fallback code before handing off a migrated session whenever those files are not part of the feature.
+
 ## File Ownership
 
 - `global.R`: root path helper and package bootstrap only.
@@ -71,5 +94,12 @@ shiny::runApp()
 - `modules/mapping_statistics`: Reads `allmappingstat.txt` for a job ID and prepares mapping-statistics chart config.
 - `frontend/app_shell/src/App.jsx`: route selection between React page views.
 - `frontend/app_shell/src/components`: visual React components.
+- `frontend/app_shell/src/components/DifferentialAnalysisPage.jsx`: Differential Analysis state orchestration and Shiny bridge wiring.
+- `frontend/app_shell/src/components/DifferentialAnalysisSections.jsx`: Differential Analysis presentational sections, tables, tabs, heatmap panels, and export panel.
+- `frontend/app_shell/src/components/DifferentialTargetNetworkPanel.jsx`: Differential target-gene and STRING table shown only on the Data subtab.
+- `frontend/app_shell/src/components/LoadDataShared.jsx`: Load Data pickers, select controls, preview table, and sample-configuration modals.
+- `frontend/app_shell/src/components/differentialAnalysisUtils.js`: Differential Analysis formatting helpers and heatmap subset utilities.
+- `modules/differential_analysis/differential_analysis.target_network.R`: Target annotation loading, miRNA-to-gene aggregation, and STRING URL generation.
 - `frontend/app_shell/src/styles`: frontend-only CSS imported by Vite.
+- `frontend/app_shell/src/styles/differential-analysis`: Differential Analysis style partials imported through `differential-analysis.css`.
 - `www/css`: Shiny shell CSS loaded before React assets.

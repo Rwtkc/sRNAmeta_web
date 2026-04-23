@@ -42,6 +42,26 @@ select {
   display: block;
 }
 
+.app-shell-host.recalculating {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.app-shell-host.recalculating::after {
+  display: none !important;
+  opacity: 0 !important;
+  background: transparent !important;
+}
+
+.app-shell-host.recalculating > *:not(.recalculating) {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+[data-shiny-busy-spinners] .app-shell-host.recalculating {
+  min-height: 0 !important;
+}
+
 .eyebrow {
   display: inline-flex;
   margin: 0 0 0.875rem;

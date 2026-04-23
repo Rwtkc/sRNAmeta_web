@@ -6,6 +6,10 @@ source(app_path("modules", "load_data", "load_data.ui.R"), local = TRUE, encodin
 source(app_path("modules", "mapping_statistics", "mapping_statistics.data.R"), local = TRUE, encoding = "UTF-8")
 source(app_path("modules", "mapping_statistics", "mapping_statistics.adapter.R"), local = TRUE, encoding = "UTF-8")
 source(app_path("modules", "mapping_statistics", "mapping_statistics.ui.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "differential_analysis", "differential_analysis.data.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "differential_analysis", "differential_analysis.target_network.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "differential_analysis", "differential_analysis.adapter.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "differential_analysis", "differential_analysis.ui.R"), local = TRUE, encoding = "UTF-8")
 
 if (!"app-static" %in% names(shiny::resourcePaths()) && file.exists(app_path("logo.webp"))) {
   shiny::addResourcePath("app-static", app_root)
@@ -79,6 +83,11 @@ ui <- shinyUI(
         "Mapping Statistics",
         value = "mapping_statistics",
         mod_mapping_statistics_ui("mapping_statistics")
+      ),
+      tabPanel(
+        "Differential Analysis",
+        value = "differential_analysis",
+        mod_differential_analysis_ui("differential_analysis")
       )
     ),
     tags$footer(

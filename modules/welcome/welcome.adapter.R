@@ -8,12 +8,12 @@ welcome_shell_config <- function() {
   list(
     view = "welcome",
     hero = list(
-      eyebrow = "Small RNA Modification Analysis",
+      eyebrow = "Small RNA Analysis",
       title = "sRNAmeta",
-      description = "A focused interface for small RNA modification data loading, quality orientation, and downstream analysis.",
-      supporting = "Start with clean BED inputs and species context before connecting the analysis modules.",
+      description = "A focused interface for small RNA data loading, mapping statistics, and differential analysis.",
+      supporting = "Load data first, then move through mapping statistics and differential analysis with a consistent workflow.",
       logoSrc = logo_src,
-      badges = c("Small RNA", "Modification Sites", "BED Inputs", "Shiny + React")
+      badges = c("Small RNA", "Load Data", "Mapping Statistics", "Differential Analysis")
     )
   )
 }

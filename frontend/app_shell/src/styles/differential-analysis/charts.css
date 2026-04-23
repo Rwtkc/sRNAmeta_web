@@ -1,0 +1,366 @@
+.diff-volcano-shell {
+  display: grid;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .srnameta-progress-card {
+  box-sizing: border-box !important;
+  display: grid !important;
+  gap: 0.75rem !important;
+  position: static !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 4.95rem !important;
+  margin: 0 !important;
+  padding: 0.95rem 1rem 1rem !important;
+  opacity: 1 !important;
+  border: 0.0625rem solid rgba(132, 169, 0, 0.22) !important;
+  border-radius: 1rem !important;
+  background: rgba(248, 251, 246, 0.98) !important;
+  box-shadow: 0 1rem 2rem rgba(16, 35, 42, 0.14) !important;
+  color: var(--rm-text) !important;
+  overflow: hidden !important;
+  transition: opacity 0.18s ease !important;
+}
+
+#shiny-notification-panel.srnameta-progress-source {
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+#shiny-notification-panel.srnameta-progress-source .shiny-notification {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .progress {
+  order: 1;
+  width: 100% !important;
+  height: 0.9rem !important;
+  margin: 0 !important;
+  border-radius: 999rem !important;
+  background: rgba(132, 169, 0, 0.14) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .progress-bar {
+  height: 100% !important;
+  background: linear-gradient(90deg, #84a900 0%, #9ac300 44%, #265dff 100%) !important;
+  box-shadow: none !important;
+  transition: width 0.28s ease !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .progress-text {
+  order: 2;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 0.9rem !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  flex-wrap: wrap !important;
+  font-size: 1.3rem !important;
+  line-height: 1.45 !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .progress-message {
+  color: var(--rm-text) !important;
+  font-size: 1.3rem !important;
+  font-weight: 800 !important;
+}
+
+.srnameta-frontend-progress.srnameta-progress-panel .progress-detail {
+  margin-left: auto !important;
+  text-align: right !important;
+  color: var(--rm-muted) !important;
+  font-size: 1.3rem !important;
+  line-height: 1.45 !important;
+}
+
+.diff-heatmap-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.diff-heatmap-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.diff-heatmap-results {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.diff-heatmap-charts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.diff-heatmap-chart-card {
+  min-height: 56rem;
+  grid-template-rows: auto 1fr;
+}
+
+.diff-heatmap-chart-card .srnameta-clustering-host {
+  min-height: 50rem;
+}
+
+.diff-heatmap-card__header,
+.diff-heatmap-selection__header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.diff-heatmap-chart-card .diff-heatmap-card__header {
+  min-height: 5.2rem;
+}
+
+.diff-heatmap-card__header .srnameta-d3-card__title {
+  font-size: 1.45rem;
+}
+
+.diff-heatmap-note {
+  margin: 0;
+  color: var(--rm-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.diff-heatmap-selection__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.diff-heatmap-selection__item {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.85rem 0.95rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.14);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.diff-heatmap-selection__label {
+  color: var(--rm-muted);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.diff-heatmap-selection__value {
+  color: var(--rm-text);
+  font-size: 1.02rem;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.diff-heatmap-selection__empty {
+  margin: 0;
+  color: var(--rm-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.srnameta-d3-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.16);
+  border-radius: 0.8rem;
+  background: rgba(247, 251, 246, 0.88);
+  box-shadow:
+    0 0.12rem 0.3rem rgba(42, 55, 27, 0.05),
+    0 0 0 0.08rem rgba(132, 169, 0, 0.08);
+}
+
+.srnameta-d3-card__title {
+  color: var(--rm-text);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.srnameta-d3-host,
+.srnameta-clustering-host {
+  position: relative;
+  width: 100%;
+  min-height: 18rem;
+}
+
+.srnameta-d3-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.srnameta-d3-axis-label,
+.srnameta-d3-axis-tick {
+  fill: #000;
+  font-family: sans-serif;
+}
+
+.srnameta-d3-axis-label {
+  font-size: 13px;
+}
+
+.srnameta-d3-axis-tick {
+  font-size: 13px;
+}
+
+.srnameta-d3-caption,
+.srnameta-d3-legend {
+  fill: #000;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.srnameta-d3-legend--library {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.srnameta-d3-caption--library,
+.srnameta-d3-caption--qc {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.srnameta-d3-chart-title {
+  fill: #000;
+  font-family: sans-serif;
+}
+
+.srnameta-d3-chart-title--library {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.srnameta-d3-chart-title--qc {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.srnameta-d3-empty {
+  color: var(--rm-muted);
+  font-size: 16px;
+}
+
+.srnameta-d3-empty--heatmap {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.srnameta-d3-loading {
+  display: grid;
+  place-items: center;
+  min-height: 26rem;
+  color: var(--rm-muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.srnameta-d3-tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  width: max-content;
+  min-width: 0;
+  max-width: calc(100vw - 2rem);
+  padding: 0.7rem 0.8rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.2);
+  border-radius: 0.7rem;
+  background: rgba(247, 251, 246, 0.96);
+  box-shadow: 0 0.75rem 1.5rem rgba(42, 55, 27, 0.14);
+  color: var(--rm-text);
+  transition: opacity 0.18s ease;
+}
+
+.srnameta-d3-tooltip__title {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.srnameta-d3-tooltip__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.22rem;
+  min-width: 0;
+}
+
+.srnameta-d3-tooltip__key,
+.srnameta-d3-tooltip__value {
+  color: var(--rm-muted);
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.srnameta-d3-tooltip__key {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.srnameta-d3-tooltip__value {
+  flex: 1 1 auto;
+}
+
+.srnameta-chart-copy {
+  margin: 0;
+  color: var(--rm-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.srnameta-clustering-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(247, 251, 246, 0.78);
+  color: var(--rm-text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  backdrop-filter: blur(1px);
+  pointer-events: none;
+}
+
+.srnameta-clustering-legend__item text {
+  dominant-baseline: middle;
+}

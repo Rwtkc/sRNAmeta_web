@@ -1,0 +1,49 @@
+@media (max-width: 88rem) {
+  .diff-heatmap-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 61.9375rem) {
+  .diff-workspace,
+  .diff-summary-grid,
+  .diff-target-network__summary {
+    grid-template-columns: 1fr;
+  }
+
+  .diff-panel--sidebar {
+    position: static;
+    top: auto;
+  }
+}
+
+@media (max-width: 44rem) {
+  .diff-data-toolbar,
+  .diff-heatmap-charts,
+  .diff-target-network__header {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .diff-data-footer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .diff-stage-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .diff-volcano {
+    max-width: 100%;
+  }
+
+  .diff-pagination {
+    justify-content: flex-start;
+  }
+
+  .diff-volcano-legend--inside {
+    left: 1rem;
+    transform: none;
+  }
+}

@@ -1,0 +1,192 @@
+.mapping-export-panel {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.18);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.mapping-export-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.mapping-export-panel__header h2 {
+  margin: 0;
+  color: var(--rm-text);
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.mapping-export-panel__header span {
+  color: var(--rm-muted);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.mapping-export-panel__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.mapping-export-panel__eyebrow {
+  display: inline-flex;
+  justify-self: start;
+  margin: 0;
+  padding: 0.42rem 0.6rem;
+  border-radius: 62.4375rem;
+  background: rgba(132, 169, 0, 0.12);
+  color: var(--rm-accent-deep);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mapping-export-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.mapping-export-field span {
+  color: var(--rm-text);
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+.mapping-export-field__hint {
+  padding: 0.55rem 0.7rem;
+  border: 0.0625rem solid rgba(194, 68, 68, 0.18);
+  border-radius: 0.5rem;
+  background: rgba(194, 68, 68, 0.1);
+  color: #9d2f2f;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.mapping-export-field__hint--warning {
+  border-color: rgba(179, 129, 19, 0.24);
+  background: rgba(179, 129, 19, 0.1);
+  color: #8b630f;
+}
+
+.mapping-export-field input,
+.mapping-export-field__static {
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0 0.8rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.22);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--rm-text);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.mapping-export-field__static {
+  display: flex;
+  align-items: center;
+}
+
+.mapping-export-format {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.mapping-export-format__option {
+  min-height: 2.9rem;
+  border: 0.0625rem solid rgba(94, 116, 45, 0.22);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--rm-text);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.mapping-export-format__option:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.mapping-export-format__option.is-active {
+  border-color: rgba(132, 169, 0, 0.54);
+  background: rgba(132, 169, 0, 0.14);
+  color: var(--rm-accent-deep);
+}
+
+.mapping-export-field input:focus {
+  border-color: rgba(132, 169, 0, 0.54);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(132, 169, 0, 0.12);
+}
+
+.mapping-export-field input:disabled {
+  cursor: not-allowed;
+  border-color: rgba(94, 116, 45, 0.14);
+  background: rgba(244, 246, 238, 0.9);
+  color: rgba(38, 45, 36, 0.52);
+  box-shadow: none;
+}
+
+.mapping-export-panel__divider {
+  height: 0.0625rem;
+  background: rgba(94, 116, 45, 0.14);
+}
+
+.mapping-export-panel__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--rm-accent);
+  color: #fffef8;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  transition:
+    background-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.mapping-export-panel__button:hover {
+  background: var(--rm-accent-deep);
+  box-shadow: 0 0.45rem 0.95rem rgba(42, 55, 27, 0.14);
+  transform: translateY(-0.0625rem);
+}
+
+.mapping-export-panel__button:disabled {
+  cursor: not-allowed;
+  background: rgba(132, 169, 0, 0.56);
+  box-shadow: none;
+  transform: none;
+}
+
+.mapping-export-panel__button.is-loading {
+  pointer-events: none;
+}
+
+.mapping-export-panel__spinner {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 0.125rem solid rgba(255, 254, 248, 0.42);
+  border-top-color: #fffef8;
+  border-radius: 50%;
+  animation: mapping-export-spin 0.72s linear infinite;
+}
+
+@keyframes mapping-export-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
