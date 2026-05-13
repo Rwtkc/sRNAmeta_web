@@ -2,6 +2,43 @@ mod_cleavage_server <- function(id, data_source, job_id, species) {
   moduleServer(id, function(input, output, session) {
     analysis_result <- reactiveVal(cleavage_empty_result())
     last_load_data_signature <- reactiveVal(NULL)
+    tracked_output_dirs <- reactiveVal(character())
+
+    track_output_dir <- function(path) {
+      path <- trimws(as.character(path %||% ""))
+
+      if (!nzchar(path)) {
+        return(invisible(NULL))
+      }
+
+      tracked_output_dirs(unique(c(tracked_output_dirs(), path)))
+      invisible(path)
+    }
+
+    untrack_output_dir <- function(path) {
+      path <- trimws(as.character(path %||% ""))
+
+      if (!nzchar(path)) {
+        return(invisible(NULL))
+      }
+
+      tracked_output_dirs(setdiff(tracked_output_dirs(), path))
+      invisible(path)
+    }
+
+    cleanup_output_dir <- function(path) {
+      cleavage_cleanup_dir(path)
+      untrack_output_dir(path)
+      invisible(path)
+    }
+
+    session$onSessionEnded(function() {
+      paths <- isolate(tracked_output_dirs())
+
+      for (path in unique(paths[nzchar(paths)])) {
+        cleavage_cleanup_dir(path)
+      }
+    })
 
     observe({
       current_signature <- list(
@@ -17,6 +54,7 @@ mod_cleavage_server <- function(id, data_source, job_id, species) {
       }
 
       if (!identical(previous_signature, current_signature)) {
+        cleanup_output_dir(analysis_result()$outputDir %||% NULL)
         analysis_result(
           cleavage_empty_result("Load Data settings changed. Run cleavage analysis again.")
         )
@@ -42,6 +80,7 @@ mod_cleavage_server <- function(id, data_source, job_id, species) {
     })
 
     observeEvent(input$run_request, {
+      previous_output_dir <- analysis_result()$outputDir %||% NULL
       progress <- shiny::Progress$new(session = session, min = 0, max = 1)
       on.exit(progress$close(), add = TRUE)
 
@@ -64,11 +103,13 @@ mod_cleavage_server <- function(id, data_source, job_id, species) {
         }
       )
 
+      track_output_dir(result$outputDir %||% NULL)
+
       if (identical(result$status, "ready")) {
         progress$set(
-          value = 1,
+          value = 0.99,
           message = "Running Cleavage Analysis",
-          detail = "100% | Cleavage analysis results are ready"
+          detail = "99% | Rendering cleavage visualization"
         )
       } else if (identical(result$status, "error")) {
         progress$set(
@@ -79,6 +120,11 @@ mod_cleavage_server <- function(id, data_source, job_id, species) {
       }
 
       analysis_result(result)
+
+      if (nzchar(trimws(as.character(previous_output_dir %||% ""))) &&
+          !identical(previous_output_dir, result$outputDir %||% NULL)) {
+        cleanup_output_dir(previous_output_dir)
+      }
     }, ignoreInit = TRUE)
   })
 }

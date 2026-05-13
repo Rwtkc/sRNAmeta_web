@@ -196,22 +196,20 @@ export default function CleavagePage({ config }) {
 
   useEffect(() => {
     const incomingRequestId = Number(incomingResult.requestId);
-
-    if (
-      isSubmitting &&
-      Number.isFinite(pendingRequestId) &&
-      incomingResult.status === "ready" &&
-      incomingRequestId !== pendingRequestId
-    ) {
-      return;
-    }
-
-    if (
-      isSubmitting &&
-      incomingResult.status === "error" &&
+    const incomingHasTerminalState =
+      incomingResult.status === "ready" || incomingResult.status === "error";
+    const incomingMatchesPending =
       Number.isFinite(pendingRequestId) &&
       Number.isFinite(incomingRequestId) &&
-      incomingRequestId !== pendingRequestId
+      incomingRequestId === pendingRequestId;
+    const incomingRequestIsMissing = !Number.isFinite(incomingRequestId);
+
+    if (
+      isSubmitting &&
+      incomingHasTerminalState &&
+      Number.isFinite(pendingRequestId) &&
+      !incomingMatchesPending &&
+      !incomingRequestIsMissing
     ) {
       return;
     }
@@ -226,9 +224,14 @@ export default function CleavagePage({ config }) {
 
     const requestMatches =
       Number.isFinite(pendingRequestId) &&
+      Number.isFinite(displayedRequestId) &&
       displayedRequestId === pendingRequestId;
+    const requestIdMissing = !Number.isFinite(displayedRequestId);
 
-    if (!(requestMatches && (result.status === "ready" || result.status === "error"))) {
+    if (
+      !((requestMatches || requestIdMissing) &&
+      (result.status === "ready" || result.status === "error"))
+    ) {
       return undefined;
     }
 

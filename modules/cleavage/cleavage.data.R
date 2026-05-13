@@ -14,11 +14,12 @@ cleavage_empty_result <- function(message = "Save a Job ID in Load Data, then ru
     visualization = list(),
     exportBundle = list(),
     parameters = list(),
-    requestId = NULL
+    requestId = NULL,
+    outputDir = NULL
   )
 }
 
-cleavage_error_result <- function(message, request_id = NULL) {
+cleavage_error_result <- function(message, request_id = NULL, output_dir = NULL) {
   list(
     status = "error",
     message = message,
@@ -26,7 +27,8 @@ cleavage_error_result <- function(message, request_id = NULL) {
     visualization = list(),
     exportBundle = list(),
     parameters = list(),
-    requestId = request_id
+    requestId = request_id,
+    outputDir = output_dir
   )
 }
 
@@ -36,7 +38,8 @@ cleavage_ready_result <- function(
   visualization = list(),
   export_bundle = list(),
   parameters = list(),
-  request_id = NULL
+  request_id = NULL,
+  output_dir = NULL
 ) {
   list(
     status = "ready",
@@ -45,7 +48,8 @@ cleavage_ready_result <- function(
     visualization = visualization %||% list(),
     exportBundle = export_bundle %||% list(),
     parameters = parameters %||% list(),
-    requestId = request_id
+    requestId = request_id,
+    outputDir = output_dir
   )
 }
 
@@ -78,11 +82,7 @@ cleavage_species_code <- function(value) {
 }
 
 cleavage_default_script_path <- function() {
-  if (identical(Sys.info()[["sysname"]], "Linux")) {
-    app_path("support", "cleavage", "cleavage_score_tracseq_version4.R")
-  } else {
-    "D:/OBS录像/桌面/cleavage/cleavage_score_tracseq_version4.R"
-  }
+  app_path("support", "cleavage", "srnameta_trna_cleavage_scoring.R")
 }
 
 cleavage_rscript_path <- function() {
@@ -115,7 +115,11 @@ cleavage_script_path <- function() {
 
 cleavage_reference_paths <- function(species) {
   code <- cleavage_species_code(species)
-  reference_dir <- srnameta_support_path("reference_db", code)
+  if (srnameta_is_linux) {
+    reference_dir <- srnameta_reference_db_path()
+  } else {
+    reference_dir <- srnameta_reference_db_path(code)
+  }
 
   list(
     speciesCode = code,
@@ -139,6 +143,69 @@ cleavage_job_files <- function(job_id) {
     treatedBg = file.path(temp_dir, "tRNA2.bam.bg"),
     controlReadCoverage = file.path(temp_dir, "tRNA1.bam.readcoverage.txt")
   )
+}
+
+cleavage_output_root <- function() {
+  app_path("tmp", "cleavage")
+}
+
+cleavage_timestamp_string <- function(value = NULL) {
+  numeric_value <- suppressWarnings(as.numeric(value %||% NA_real_))
+
+  if (!is.finite(numeric_value)) {
+    return(NULL)
+  }
+
+  format(floor(numeric_value), scientific = FALSE, trim = TRUE)
+}
+
+cleavage_output_dir <- function(job_id, request_id = NULL) {
+  run_id <- cleavage_timestamp_string(request_id)
+
+  if (
+    length(run_id) != 1L ||
+    is.na(run_id) ||
+    !nzchar(run_id) ||
+    identical(run_id, "NA")
+  ) {
+    run_id <- cleavage_timestamp_string(as.numeric(Sys.time()) * 1000)
+  }
+
+  file.path(cleavage_output_root(), job_id, run_id)
+}
+
+cleavage_prepare_output_dir <- function(job_id, request_id = NULL) {
+  output_dir <- cleavage_output_dir(job_id, request_id)
+
+  if (dir.exists(output_dir)) {
+    unlink(output_dir, recursive = TRUE, force = TRUE)
+  }
+
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  output_dir
+}
+
+cleavage_normalize_request_id <- function(value = NULL) {
+  cleavage_timestamp_string(value)
+}
+
+cleavage_cleanup_dir <- function(path) {
+  path <- trimws(as.character(path %||% ""))
+
+  if (!nzchar(path)) {
+    return(invisible(FALSE))
+  }
+
+  root <- normalizePath(cleavage_output_root(), winslash = "/", mustWork = FALSE)
+  target <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  is_within_root <- identical(target, root) || startsWith(target, paste0(root, "/"))
+
+  if (!is_within_root || !dir.exists(path)) {
+    return(invisible(FALSE))
+  }
+
+  unlink(path, recursive = TRUE, force = TRUE)
+  invisible(TRUE)
 }
 
 cleavage_required_paths <- function(job_files, reference_paths, script_path, rscript_path) {
@@ -281,21 +348,8 @@ cleavage_read_structure_map <- function(path) {
   )
 }
 
-cleavage_cleanup_previous_outputs <- function(job_dir) {
-  cleanup_targets <- c(
-    list.files(job_dir, pattern = "\\.png$", full.names = TRUE),
-    list.files(job_dir, pattern = "\\.pdf$", full.names = TRUE),
-    file.path(job_dir, "html")
-  )
-  cleanup_targets <- cleanup_targets[file.exists(cleanup_targets)]
-
-  if (length(cleanup_targets)) {
-    unlink(cleanup_targets, recursive = TRUE, force = TRUE)
-  }
-}
-
-cleavage_build_visualization <- function(job_dir, reference_paths, parameters) {
-  figure_path <- file.path(job_dir, "figure_data.txt")
+cleavage_build_visualization <- function(output_dir, reference_paths, parameters) {
+  figure_path <- file.path(output_dir, "figure_data.txt")
 
   if (!file.exists(figure_path)) {
     return(list())
@@ -367,10 +421,10 @@ cleavage_build_visualization <- function(job_dir, reference_paths, parameters) {
   )
 }
 
-cleavage_collect_summary <- function(job_dir, species_code) {
-  txt_files <- list.files(job_dir, pattern = "\\.txt$", full.names = TRUE)
-  json_files <- list.files(job_dir, pattern = "\\.json$", full.names = TRUE)
-  trna_list_path <- file.path(job_dir, "tRNA_list.txt")
+cleavage_collect_summary <- function(output_dir, species_code) {
+  txt_files <- list.files(output_dir, pattern = "\\.txt$", full.names = TRUE)
+  json_files <- list.files(output_dir, pattern = "\\.json$", full.names = TRUE)
+  trna_list_path <- file.path(output_dir, "tRNA_list.txt")
   trna_count <- cleavage_count_lines(trna_list_path)
 
   list(
@@ -378,10 +432,10 @@ cleavage_collect_summary <- function(job_dir, species_code) {
     chartCount = trna_count,
     txtCount = length(txt_files),
     jsonCount = length(json_files),
-    figureRows = cleavage_count_table_rows(file.path(job_dir, "figure_data.txt")),
-    zeroRows = cleavage_count_table_rows(file.path(job_dir, "clean_result_control_iszero.txt")),
-    nonZeroRows = cleavage_count_table_rows(file.path(job_dir, "clean_result_control_notzero.txt")),
-    hasZip = file.exists(file.path(job_dir, "results.zip"))
+    figureRows = cleavage_count_table_rows(file.path(output_dir, "figure_data.txt")),
+    zeroRows = cleavage_count_table_rows(file.path(output_dir, "clean_result_control_iszero.txt")),
+    nonZeroRows = cleavage_count_table_rows(file.path(output_dir, "clean_result_control_notzero.txt")),
+    hasZip = file.exists(file.path(output_dir, "results.zip"))
   )
 }
 
@@ -422,14 +476,15 @@ cleavage_read_export_csv <- function(path) {
   paste(output, collapse = "\n")
 }
 
-cleavage_collect_export_bundle <- function(job_dir, job_id = NULL) {
+cleavage_collect_export_bundle <- function(output_dir, job_id = NULL) {
   source_name <- "figure_data.txt"
   export_name <- "figure_data.csv"
-  content <- cleavage_read_export_csv(file.path(job_dir, source_name))
+  content <- cleavage_read_export_csv(file.path(output_dir, source_name))
+  resolved_job_id <- job_id %||% basename(dirname(output_dir))
 
   list(
-    jobId = job_id %||% basename(job_dir),
-    filename = sprintf("srnameta_cleavage_%s_figure_data.csv", job_id %||% basename(job_dir)),
+    jobId = resolved_job_id,
+    filename = sprintf("srnameta_cleavage_%s_figure_data.csv", resolved_job_id),
     file = list(
       name = export_name,
       content = content %||% ""
@@ -547,7 +602,7 @@ cleavage_run_script_with_progress <- function(rscript_path, args, progress, log_
 
 run_cleavage_analysis <- function(request, data_source, job_id, species, progress = NULL) {
   sanitized <- cleavage_sanitize_request(request)
-  request_id <- sanitized$requestedAt %||% NULL
+  request_id <- cleavage_normalize_request_id(sanitized$requestedAt)
 
   if (!identical(trimws(as.character(data_source %||% "")), "jobid")) {
     return(cleavage_error_result(
@@ -572,6 +627,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
   )
 
   job_files <- cleavage_job_files(job_ids[[1]])
+  output_dir <- cleavage_prepare_output_dir(job_ids[[1]], request_id)
   reference_paths <- cleavage_reference_paths(species)
   script_path <- cleavage_script_path()
   rscript_path <- cleavage_rscript_path()
@@ -579,6 +635,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
   missing_message <- cleavage_missing_paths_message(required_paths)
 
   if (nzchar(missing_message)) {
+    cleavage_cleanup_dir(output_dir)
     return(cleavage_error_result(missing_message, request_id = request_id))
   }
 
@@ -594,12 +651,10 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     cleavage_progress_detail(0.24, "Validating reference FASTA and structure annotation")
   )
 
-  cleavage_cleanup_previous_outputs(job_files$jobDir)
-
   cleavage_progress_set(
     progress,
     0.32,
-    cleavage_progress_detail(0.32, "Clearing stale cleavage output files")
+    cleavage_progress_detail(0.32, "Preparing writable cleavage output workspace")
   )
 
   log_file <- tempfile(pattern = "srnameta-cleavage-", fileext = ".log")
@@ -611,7 +666,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     reference_paths$structure,
     job_files$inputBam,
     job_files$treatedBam,
-    job_files$jobDir,
+    output_dir,
     format(sanitized$cleavageRatio, scientific = FALSE, trim = TRUE),
     format(sanitized$pvalue, scientific = FALSE, trim = TRUE),
     format(sanitized$foldChange, scientific = FALSE, trim = TRUE),
@@ -650,7 +705,8 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
 
     return(cleavage_error_result(
       sprintf("Cleavage analysis failed. %s", detail),
-      request_id = request_id
+      request_id = request_id,
+      output_dir = output_dir
     ))
   }
 
@@ -660,7 +716,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     cleavage_progress_detail(0.88, "Reading cleavage result tables")
   )
 
-  summary <- cleavage_collect_summary(job_files$jobDir, reference_paths$speciesCode)
+  summary <- cleavage_collect_summary(output_dir, reference_paths$speciesCode)
 
   cleavage_progress_set(
     progress,
@@ -668,7 +724,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     cleavage_progress_detail(0.94, "Preparing browser visualization data")
   )
 
-  visualization <- cleavage_build_visualization(job_files$jobDir, reference_paths, sanitized)
+  visualization <- cleavage_build_visualization(output_dir, reference_paths, sanitized)
 
   cleavage_progress_set(
     progress,
@@ -676,7 +732,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     cleavage_progress_detail(0.96, "Preparing export bundle")
   )
 
-  export_bundle <- cleavage_collect_export_bundle(job_files$jobDir, job_ids[[1]])
+  export_bundle <- cleavage_collect_export_bundle(output_dir, job_ids[[1]])
 
   cleavage_progress_set(
     progress,
@@ -690,6 +746,7 @@ run_cleavage_analysis <- function(request, data_source, job_id, species, progres
     visualization = visualization,
     export_bundle = export_bundle,
     parameters = sanitized,
-    request_id = request_id
+    request_id = request_id,
+    output_dir = output_dir
   )
 }

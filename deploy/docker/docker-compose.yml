@@ -34,7 +34,8 @@ services:
     volumes:
       - "${APP_HOST_PATH:-/share/shiny/sRNAmeta}:/share/shiny/sRNAmeta:rw"
       - "${HOST_R_ENV_PATH:-/home/shiny/miniconda3/envs/sRNAmeta_web}:/home/shiny/miniconda3/envs/sRNAmeta_web:ro"
-      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:ro"
+      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:rw"
+      - "${REFERENCE_DB_HOST_PATH:-/public/liuqi/wwwdb/sncRNAbench/tRNA}:/public/liuqi/wwwdb/sncRNAbench/tRNA:ro"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
       interval: 30s
@@ -57,7 +58,8 @@ services:
     volumes:
       - "${APP_HOST_PATH:-/share/shiny/sRNAmeta}:/share/shiny/sRNAmeta:rw"
       - "${HOST_R_ENV_PATH:-/home/shiny/miniconda3/envs/sRNAmeta_web}:/home/shiny/miniconda3/envs/sRNAmeta_web:ro"
-      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:ro"
+      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:rw"
+      - "${REFERENCE_DB_HOST_PATH:-/public/liuqi/wwwdb/sncRNAbench/tRNA}:/public/liuqi/wwwdb/sncRNAbench/tRNA:ro"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
       interval: 30s
@@ -82,7 +84,8 @@ services:
     volumes:
       - "${APP_HOST_PATH:-/share/shiny/sRNAmeta}:/share/shiny/sRNAmeta:rw"
       - "${HOST_R_ENV_PATH:-/home/shiny/miniconda3/envs/sRNAmeta_web}:/home/shiny/miniconda3/envs/sRNAmeta_web:ro"
-      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:ro"
+      - "${JOB_ROOT_HOST_PATH:-/public/liuqi/wwwdata/sncRNAbench/results}:/public/liuqi/wwwdata/sncRNAbench/results:rw"
+      - "${REFERENCE_DB_HOST_PATH:-/public/liuqi/wwwdb/sncRNAbench/tRNA}:/public/liuqi/wwwdb/sncRNAbench/tRNA:ro"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
       interval: 30s
