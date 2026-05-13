@@ -18,6 +18,8 @@ import {
 export function useD3Chart(drawChart, deps) {
   const ref = useRef(null);
   const renderedWidthRef = useRef(0);
+  const lastRenderReasonRef = useRef(null);
+  const lastRenderAtRef = useRef(0);
   const [isRendering, setIsRendering] = useState(false);
 
   useEffect(() => {
@@ -40,6 +42,11 @@ export function useD3Chart(drawChart, deps) {
       }
 
       renderedWidthRef.current = Math.round(chartRoot.clientWidth || 0);
+      lastRenderReasonRef.current = reason;
+      lastRenderAtRef.current =
+        typeof performance !== "undefined" && typeof performance.now === "function"
+          ? performance.now()
+          : Date.now();
       cleanup = drawChart(chartRoot, {
         animate: reason !== "resize",
         reason
@@ -76,6 +83,21 @@ export function useD3Chart(drawChart, deps) {
         const nextWidth = Math.round(entries[0]?.contentRect?.width || chartRoot.clientWidth || 0);
 
         if (nextWidth && nextWidth !== renderedWidthRef.current) {
+          const now =
+            typeof performance !== "undefined" && typeof performance.now === "function"
+              ? performance.now()
+              : Date.now();
+          const widthDelta = Math.abs(nextWidth - renderedWidthRef.current);
+          const justRenderedInitially =
+            lastRenderReasonRef.current === "initial" &&
+            now - lastRenderAtRef.current < 500;
+          const likelyScrollbarOrLayoutShift = justRenderedInitially && widthDelta <= 24;
+
+          if (likelyScrollbarOrLayoutShift) {
+            renderedWidthRef.current = nextWidth;
+            return;
+          }
+
           scheduleRender("resize");
         }
       });

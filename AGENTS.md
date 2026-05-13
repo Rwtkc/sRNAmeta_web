@@ -43,6 +43,7 @@ shiny::runApp()
 
 - Use `app_path()` from `global.R` for all local sources and file paths.
 - Local job ID reads default to `D:/OBS录像/桌面/sRNAmeta_dir` through `srnameta_job_root`.
+- App-level demo and annotation files resolve through `srnameta_support_root`. On Windows this defaults to `D:/OBS录像/桌面/sRNAmeta_dir`; on Linux it defaults to the project-local `support/` directory unless `SRNAMETA_SUPPORT_ROOT` is set.
 - Server deployments should override the job ID root with the `SRNAMETA_JOB_ROOT` environment variable instead of editing code.
 - Use `srnameta_job_path(job_id)` when resolving a user-provided job ID.
 - Register static resources only from `ui.R`.
@@ -72,8 +73,8 @@ shiny::runApp()
 - Heatmap refresh from `Top genes` must only refresh the heatmap payload, not rerun the full differential analysis request.
 - Heatmap detail modes must remain `Brush Selection` and `Gene IDs`.
 - Keep Differential Analysis typography, sidebar sizing, export controls, and output panel styling aligned with Load Data and Mapping Statistics.
-- The demo expression matrix flow now uses the human six-sample file `hsa_synthetic_raw_counts_6samples.txt` under `srnameta_job_root`; do not switch it back to the older maize demo unless explicitly requested.
-- The target annotation file for Differential target-gene mapping currently resolves from `Conserved_Site_Context_Scores.txt` or `Conserved_Site_Context_Scores.hsa.txt` under `srnameta_job_root`.
+- The demo expression matrix flow now uses the human six-sample file `hsa_synthetic_raw_counts_6samples.txt` under `srnameta_support_root`; do not switch it back to the older maize demo unless explicitly requested.
+- The target annotation file for Differential target-gene mapping currently resolves from `Conserved_Site_Context_Scores.txt` or `Conserved_Site_Context_Scores.hsa.txt` under `srnameta_support_root`.
 - Differential target-gene mapping is currently intended for `miRNA` only and supports `Human` and `Mouse` species.
 - `Target Gene Network` must remain visible only while Differential Analysis is on the `Data` subtab.
 - `Target Gene Network` table behavior should stay aligned with the Differential Data table: 10 rows per page, search with Apply, page buttons, and page jump controls.

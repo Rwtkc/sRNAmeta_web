@@ -9,6 +9,11 @@ body,
   min-height: 100%;
 }
 
+html {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
 body {
   color: var(--rm-text);
   font-family: sans-serif;

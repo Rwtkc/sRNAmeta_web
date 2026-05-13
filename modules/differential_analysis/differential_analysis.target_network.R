@@ -29,8 +29,8 @@ differential_target_species_options <- function() {
 
 differential_target_annotation_path <- function() {
   candidates <- c(
-    file.path(srnameta_job_root, "Conserved_Site_Context_Scores.txt"),
-    file.path(srnameta_job_root, "Conserved_Site_Context_Scores.hsa.txt")
+    srnameta_support_path("Conserved_Site_Context_Scores.txt"),
+    srnameta_support_path("Conserved_Site_Context_Scores.hsa.txt")
   )
   existing <- candidates[file.exists(candidates)]
 
@@ -45,7 +45,7 @@ differential_target_annotation_data <- function() {
   path <- differential_target_annotation_path()
 
   if (!file.exists(path)) {
-    stop("Conserved_Site_Context_Scores.txt was not found under the sRNAmeta job root.", call. = FALSE)
+    stop("Conserved_Site_Context_Scores.txt was not found under the sRNAmeta support root.", call. = FALSE)
   }
 
   info <- file.info(path)

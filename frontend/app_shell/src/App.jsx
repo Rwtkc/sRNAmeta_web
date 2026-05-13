@@ -1,4 +1,5 @@
 import LoadDataPage from "./components/LoadDataPage";
+import CleavagePage from "./components/CleavagePage";
 import DifferentialAnalysisPage from "./components/DifferentialAnalysisPage";
 import MappingStatisticsPage from "./components/MappingStatisticsPage";
 import WelcomePage from "./components/WelcomePage";
@@ -12,6 +13,8 @@ export default function App({ config = {} }) {
       <main className="shell-main">
         {view === "load-data" ? (
           <LoadDataPage config={config.loadData || {}} />
+        ) : view === "cleavage" ? (
+          <CleavagePage config={config.cleavage || {}} />
         ) : view === "differential-analysis" ? (
           <DifferentialAnalysisPage config={config.differentialAnalysis || {}} />
         ) : view === "mapping-statistics" ? (

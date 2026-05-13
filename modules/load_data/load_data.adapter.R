@@ -1,5 +1,5 @@
 load_data_demo_matrix_payload <- function() {
-  demo_file <- file.path(srnameta_job_root, "hsa_synthetic_raw_counts_6samples.txt")
+  demo_file <- srnameta_support_path("hsa_synthetic_raw_counts_6samples.txt")
 
   if (!file.exists(demo_file)) {
     return(NULL)

@@ -17,6 +17,7 @@ export default function MappingExportPanel({
   totalUniqueTags,
   csvFileName
 }) {
+  const [isOpen, setIsOpen] = useState(true);
   const [settings, setSettings] = useState(defaultExportSettings);
   const [isFigureExporting, setIsFigureExporting] = useState(false);
   const [isDataExporting, setIsDataExporting] = useState(false);
@@ -87,12 +88,20 @@ export default function MappingExportPanel({
   }
 
   return (
-    <section className="mapping-export-panel" aria-label="Export unique tags chart">
-      <div className="mapping-export-panel__header">
+    <section className={`mapping-export-panel${isOpen ? " is-open" : ""}`} aria-label="Export unique tags chart">
+      <button
+        type="button"
+        className="mapping-export-panel__header mapping-export-panel__header--toggle"
+        aria-expanded={isOpen ? "true" : "false"}
+        onClick={() => {
+          setIsOpen((current) => !current);
+        }}
+      >
         <h2>Export</h2>
-        <span aria-hidden="true">⌃</span>
-      </div>
-      <div className="mapping-export-panel__body">
+        <span className="diff-param-section__chevron" aria-hidden="true" />
+      </button>
+      {isOpen ? (
+        <div className="mapping-export-panel__body">
         <p className="mapping-export-panel__eyebrow">Export Figure</p>
         <div className="mapping-export-field">
           <span>Format</span>
@@ -187,7 +196,8 @@ export default function MappingExportPanel({
             "Export CSV"
           )}
         </button>
-      </div>
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -14,6 +14,25 @@
   margin-bottom: 1rem;
 }
 
+.mapping-export-panel__header--toggle {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mapping-export-panel__header--toggle:hover {
+  background: transparent;
+}
+
+.mapping-export-panel__header--toggle:focus-visible {
+  outline: 0.125rem solid rgba(132, 169, 0, 0.42);
+  outline-offset: 0.125rem;
+  border-radius: 0.5rem;
+}
+
 .mapping-export-panel__header h2 {
   margin: 0;
   color: var(--rm-text);
@@ -22,10 +41,12 @@
   letter-spacing: 0;
 }
 
-.mapping-export-panel__header span {
-  color: var(--rm-muted);
-  font-size: 1rem;
-  font-weight: 900;
+.mapping-export-panel .diff-param-section__chevron {
+  transform: rotate(45deg) translateY(-0.125rem);
+}
+
+.mapping-export-panel.is-open .diff-param-section__chevron {
+  transform: rotate(225deg) translateY(0.0625rem);
 }
 
 .mapping-export-panel__body {

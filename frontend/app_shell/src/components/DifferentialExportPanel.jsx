@@ -55,6 +55,7 @@ function resolveActiveFigureCharts(rootElement, activeStage) {
 }
 
 export function DifferentialExportPanel({ activeStage, result, stageContentRef, disabled }) {
+  const [isOpen, setIsOpen] = useState(true);
   const [settings, setSettings] = useState(defaultExportSettings);
   const [isFigureExporting, setIsFigureExporting] = useState(false);
   const [isDataExporting, setIsDataExporting] = useState(false);
@@ -131,12 +132,23 @@ export function DifferentialExportPanel({ activeStage, result, stageContentRef, 
   }
 
   return (
-    <section className="mapping-export-panel diff-export-panel" aria-label="Export differential analysis">
-      <div className="mapping-export-panel__header">
+    <section
+      className={`mapping-export-panel diff-export-panel${isOpen ? " is-open" : ""}`}
+      aria-label="Export differential analysis"
+    >
+      <button
+        type="button"
+        className="mapping-export-panel__header mapping-export-panel__header--toggle"
+        aria-expanded={isOpen ? "true" : "false"}
+        onClick={() => {
+          setIsOpen((current) => !current);
+        }}
+      >
         <h2>Export</h2>
-        <span aria-hidden="true">⌃</span>
-      </div>
-      <div className="mapping-export-panel__body">
+        <span className="diff-param-section__chevron" aria-hidden="true" />
+      </button>
+      {isOpen ? (
+        <div className="mapping-export-panel__body">
         <p className="mapping-export-panel__eyebrow">Export Figure</p>
         <div className="mapping-export-field">
           <span>Format</span>
@@ -217,7 +229,7 @@ export function DifferentialExportPanel({ activeStage, result, stageContentRef, 
         <p className="mapping-export-panel__eyebrow">Export Data</p>
         <div className="mapping-export-field">
           <span>Format</span>
-          <div className="mapping-export-field__static">ZIP (CSV bundle)</div>
+          <div className="mapping-export-field__static">CSV</div>
         </div>
         <button
           className={`mapping-export-panel__button ${isDataExporting ? "is-loading" : ""}`}
@@ -234,7 +246,8 @@ export function DifferentialExportPanel({ activeStage, result, stageContentRef, 
             "Export ZIP"
           )}
         </button>
-      </div>
+        </div>
+      ) : null}
     </section>
   );
 }

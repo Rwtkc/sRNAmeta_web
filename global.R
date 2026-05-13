@@ -4,8 +4,32 @@ app_path <- function(...) {
   file.path(app_root, ...)
 }
 
+srnameta_is_linux <- identical(Sys.info()[["sysname"]], "Linux")
+
+srnameta_default_job_root <- function() {
+  if (srnameta_is_linux) {
+    "/public/liuqi/wwwdata/sncRNAbench/results"
+  } else {
+    "D:/OBS录像/桌面/sRNAmeta_dir"
+  }
+}
+
+srnameta_default_support_root <- function() {
+  if (srnameta_is_linux) {
+    app_path("support")
+  } else {
+    "D:/OBS录像/桌面/sRNAmeta_dir"
+  }
+}
+
 srnameta_job_root <- normalizePath(
-  Sys.getenv("SRNAMETA_JOB_ROOT", unset = "D:/OBS录像/桌面/sRNAmeta_dir"),
+  Sys.getenv("SRNAMETA_JOB_ROOT", unset = srnameta_default_job_root()),
+  winslash = "/",
+  mustWork = FALSE
+)
+
+srnameta_support_root <- normalizePath(
+  Sys.getenv("SRNAMETA_SUPPORT_ROOT", unset = srnameta_default_support_root()),
   winslash = "/",
   mustWork = FALSE
 )
@@ -18,6 +42,10 @@ srnameta_job_path <- function(job_id) {
   }
 
   file.path(srnameta_job_root, job_id)
+}
+
+srnameta_support_path <- function(...) {
+  file.path(srnameta_support_root, ...)
 }
 
 required_packages <- c("shiny", "jsonlite")
